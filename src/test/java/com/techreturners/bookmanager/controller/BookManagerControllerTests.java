@@ -116,14 +116,22 @@ public class BookManagerControllerTests {
         // Act
         when(mockBookManagerServiceImpl.insertBook(book)).thenReturn(book);
 
-        this.mockMvcController.perform(
-                        MockMvcRequestBuilders.post("/api/v1/book/")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(book)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        this.mockMvcController.perform( MockMvcRequestBuilders.post("/api/v1/book/").contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(book))).andExpect(MockMvcResultMatchers.status().isCreated());
 
-        this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + book.getId()));
+        this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + book.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
         // Assert
         verify(mockBookManagerServiceImpl, times(1)).deleteBookById(book.getId());
+    }
+
+    @Test
+    public void testDeleteBookDoesNotExist() throws Exception {
+        // Arrange
+        Long nonexistentId = 7848419283L;
+        this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + nonexistentId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        // Assert
+        verify(mockBookManagerServiceImpl, times(1)).deleteBookById(nonexistentId);
     }
 }
