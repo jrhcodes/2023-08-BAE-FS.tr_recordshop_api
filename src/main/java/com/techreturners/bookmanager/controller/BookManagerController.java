@@ -25,7 +25,8 @@ public class BookManagerController {
 
     @GetMapping({"/{bookId}"})
     public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
-        return new ResponseEntity<>(bookManagerService.getBookById(bookId), HttpStatus.OK);
+        Book book = bookManagerService.getBookById(bookId);
+        return new ResponseEntity<Book>(book, book==null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @PostMapping
