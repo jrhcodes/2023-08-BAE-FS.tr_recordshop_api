@@ -1,5 +1,10 @@
 # 📖 Minimalist Book Manager API
 
+## Student Notes
+I put the logic for the more useful responses in the control layer but now feel that it might have been better to put it in the service layer and then throw exceptions from that, which could be intercepted in the control layer and I will do this at some later date, feedback dependent.
+I tried to test the exception handling I had added but because none of the service or control layer functions threw exceptions this wasn't possible.  
+
+
 ## Introduction
 This is the starter repository for the Further APIs session. It provides a start to creating a Minimalist Book Manager API
 using a Test-Driven Development approach.
@@ -52,6 +57,7 @@ to add in exception handling to the project?
 - Clue 1: What if someone wants to add a book with an ID for a book that already exists? How do we handle this gracefully?
 
 - Clue 2: What if someone wants to find a book by an ID that doesn't yet exist? 
-- 
-  How can we improve the API by handling errors gracefully and show a helpful message to the client?
+
+- How can we improve the API by handling errors gracefully and show a helpful message to the client?
+  
   
