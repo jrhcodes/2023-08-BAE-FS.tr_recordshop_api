@@ -79,6 +79,18 @@ public class BookManagerControllerTests {
     }
 
     @Test
+    public void testGetMappingGetBookByIdNotFound() throws Exception {
+
+        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+
+        when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(null);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/book/" + book.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
     public void testPostMappingAddABook() throws Exception {
 
         Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
