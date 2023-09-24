@@ -126,6 +126,8 @@ public class BookManagerControllerTests {
 
         Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
 
+        when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
+
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.put("/api/v1/book/" + book.getId())
                                 .contentType(MediaType.APPLICATION_JSON)

@@ -39,7 +39,7 @@ public class BookManagerController {
             Book newBook = bookManagerService.insertBook(book);
             return new ResponseEntity<>(newBook, httpHeaders, HttpStatus.CREATED);
         } else {
-            httpHeaders.add("error", "Book with this ID already exists" + book.getId().toString());
+            httpHeaders.add("Error", "Book with this ID already exists" + book.getId().toString());
             return new ResponseEntity<>(foundBook, httpHeaders, HttpStatus.CONFLICT);
         }
 
@@ -49,8 +49,15 @@ public class BookManagerController {
 
     @PutMapping({"/{bookId}"})
     public ResponseEntity<Book> updateBookById(@PathVariable("bookId") Long bookId, @RequestBody Book book) {
-        bookManagerService.updateBookById(bookId, book);
-        return new ResponseEntity<>(bookManagerService.getBookById(bookId), HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("book", "/api/v1/book/" + book.getId().toString());
+        if(bookManagerService.getBookById(book.getId()) == null) {
+            httpHeaders.add("error", "Cannot find book with ID " + book.getId().toString());
+            return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+        } else {
+            bookManagerService.updateBookById(bookId, book);
+            return new ResponseEntity<>(bookManagerService.getBookById(bookId), HttpStatus.OK);
+        }
     }
 
     @DeleteMapping({"/{bookId}"})
