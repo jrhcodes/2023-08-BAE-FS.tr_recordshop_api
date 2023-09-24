@@ -81,4 +81,12 @@ public class BookManagerServiceTests {
         verify(mockBookManagerRepository, times(1)).save(book);
     }
 
+    @Test
+    public void Added () {
+        final Long bookId = 5L;
+        when(mockBookManagerRepository.findById(bookId)).thenReturn(null);
+        bookManagerServiceImpl.deleteBookById(bookId);
+        verify(mockBookManagerRepository, times(1)).deleteById(bookId);
+    }
+
 }
