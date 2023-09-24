@@ -31,10 +31,20 @@ public class BookManagerController {
 
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        Book newBook = bookManagerService.insertBook(book);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("book", "/api/v1/book/" + newBook.getId().toString());
-        return new ResponseEntity<>(newBook, httpHeaders, HttpStatus.CREATED);
+        httpHeaders.add("book", "/api/v1/book/" + book.getId().toString());
+        Book foundBook = bookManagerService.getBookById(book.getId());
+
+        if( foundBook == null) {
+            Book newBook = bookManagerService.insertBook(book);
+            return new ResponseEntity<>(newBook, httpHeaders, HttpStatus.CREATED);
+        } else {
+            httpHeaders.add("error", "Book with this ID already exists" + book.getId().toString());
+            return new ResponseEntity<>(foundBook, httpHeaders, HttpStatus.CONFLICT);
+        }
+
+
+
     }
 
     @PutMapping({"/{bookId}"})

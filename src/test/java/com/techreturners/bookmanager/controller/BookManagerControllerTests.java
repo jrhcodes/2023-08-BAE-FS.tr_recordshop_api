@@ -116,9 +116,9 @@ public class BookManagerControllerTests {
                         MockMvcRequestBuilders.post("/api/v1/book/")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(book)))
-                .andExpect(MockMvcResultMatchers.status().isFound());
+                .andExpect(MockMvcResultMatchers.status().isConflict());
 
-        verify(mockBookManagerServiceImpl, times(1)).insertBook(book);
+        verify(mockBookManagerServiceImpl, times(0)).insertBook(book);
     }
 
     @Test
@@ -141,11 +141,7 @@ public class BookManagerControllerTests {
         // Arrange
         Book book = new Book(4000L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
         // Act
-        when(mockBookManagerServiceImpl.insertBook(book)).thenReturn(book);
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
-
-        this.mockMvcController.perform( MockMvcRequestBuilders.post("/api/v1/book/").contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(book))).andExpect(MockMvcResultMatchers.status().isCreated());
 
         this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + book.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -157,6 +153,9 @@ public class BookManagerControllerTests {
     public void testDeleteBookDoesNotExist() throws Exception {
         // Arrange
         Long nonexistentId =-1L;
+
+        when(mockBookManagerServiceImpl.getBookById(nonexistentId)).thenReturn(null);
+
         this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + nonexistentId))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
         // Assert
