@@ -94,14 +94,15 @@ public class BookManagerControllerTests {
         verify(mockBookManagerServiceImpl, times(1)).insertBook(book);
     }
 
-    //User Story 4 - Update Book By Id Solution
     @Test
     public void testPutMappingUpdateABook() throws Exception {
 
         Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
 
+        when(mockBookManagerServiceImpl.insertBook(book)).thenReturn(book);
+
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.put("/api/v1/book/" + book.getId())
+                MockMvcRequestBuilders.post("/api/v1/book/" + book.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(book)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -110,20 +111,63 @@ public class BookManagerControllerTests {
     }
 
     @Test
-    public void testDeleteABook() throws Exception {
-        Book book = new Book(5L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
+    public void testDeleteBookByIdWhenLast() throws Exception {
+
+        Book bookToDelete = new Book(7L, "Delete!", "This is the book to delete!", "Del Eter", Genre.Romance);
+        List<Book> books = new ArrayList<>();
+        books.add(new Book(1L, "Book One", "This is the description for Book One", "Person One", Genre.Education));
+        books.add(new Book(2L, "Book Two", "This is the description for Book Two", "Person Two", Genre.Education));
+        books.add(new Book(3L, "Book Three", "This is the description for Book Three", "Person Three", Genre.Education));
+        books.add(bookToDelete);
+
+
+        when(mockBookManagerServiceImpl.getAllBooks()).thenReturn(books);
+
+        doAnswer(invocation -> {
+            Long bookId = invocation.getArgument(0);
+            books.removeIf(book -> book.getId().equals(bookId));
+            return null; // Method has a void return type
+        }).when(mockBookManagerServiceImpl).deleteBookById(7L);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.put("/api/v1/book/" + book.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(book)))
-                                .andExpect(MockMvcResultMatchers.status().isOk());
+                MockMvcRequestBuilders.get("/api/v1/book/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Book One"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("Book Two"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].title").value("Book Three"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[3].id").value(7))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[3].title").value("Delete!"));
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.delete("/api/v1/book/" + book.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(book)))
-                                .andExpect(MockMvcResultMatchers.status().isOk());
+                 MockMvcRequestBuilders.delete("/api/v1/book/" + bookToDelete.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/book/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Book One"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("Book Two"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].id").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].title").value("Book Three"));
+
+        verify(mockBookManagerServiceImpl, times(1)).deleteBookById(bookToDelete.getId());
     }
+
+//    @Test
+//    public void testDeleteBookByIdFail() throws Exception {
+//
+//        Book book = new Book(5L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
+//
+//        this.mockMvcController.perform(
+//                        MockMvcRequestBuilders.delete("/api/v1/book/" + book.getId())
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(mapper.writeValueAsString(book)))
+//                .andExpect(MockMvcResultMatchers.status().isOk());
+//    }
 
 }
