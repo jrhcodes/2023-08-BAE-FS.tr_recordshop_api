@@ -172,17 +172,14 @@ public class BookManagerControllerTests {
 
     @Test
     public void testDeleteBookDoesNotExist() throws Exception {
-        // Arrange
         Long nonexistentId =-1L;
 
         when(mockBookManagerServiceImpl.getBookById(nonexistentId)).thenReturn(null);
 
         this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/book/" + nonexistentId))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-        // Assert
+
         verify(mockBookManagerServiceImpl, times(0)).deleteBookById(nonexistentId);
     }
-
-
 
 }
