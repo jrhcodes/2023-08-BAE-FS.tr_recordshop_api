@@ -30,7 +30,6 @@ public class BookFinder {
                 int bookId = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 // Other book attributes...
-
                 // Do something with the book information
                 System.out.println("Book ID: " + bookId);
                 System.out.println("Title: " + title);
