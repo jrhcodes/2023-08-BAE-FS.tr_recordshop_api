@@ -1,14 +1,13 @@
-package com.techreturners.bookmanager.controller;
+package com.techreturners.recordshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techreturners.bookmanager.model.Book;
-import com.techreturners.bookmanager.model.Genre;
-import com.techreturners.bookmanager.service.BookManagerServiceImpl;
+import com.techreturners.recordshop.model.Book;
+import com.techreturners.recordshop.model.BookGenre;
+import com.techreturners.recordshop.service.BookManagerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.rmi.ServerError;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +47,9 @@ public class BookManagerControllerTests {
     public void testGetAllBooksReturnsBooks() throws Exception {
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, "Book One", "This is the description for Book One", "Person One", Genre.Education));
-        books.add(new Book(2L, "Book Two", "This is the description for Book Two", "Person Two", Genre.Education));
-        books.add(new Book(3L, "Book Three", "This is the description for Book Three", "Person Three", Genre.Education));
+        books.add(new Book(1L, "Book One", "This is the description for Book One", "Person One", BookGenre.Education));
+        books.add(new Book(2L, "Book Two", "This is the description for Book Two", "Person Two", BookGenre.Education));
+        books.add(new Book(3L, "Book Three", "This is the description for Book Three", "Person Three", BookGenre.Education));
 
         when(mockBookManagerServiceImpl.getAllBooks()).thenReturn(books);
 
@@ -69,7 +67,7 @@ public class BookManagerControllerTests {
     @Test
     public void testGetMappingGetBookById() throws Exception {
 
-        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
 
@@ -83,7 +81,7 @@ public class BookManagerControllerTests {
     @Test
     public void testGetMappingGetBookByIdNotFound() throws Exception {
 
-        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(null);
 
@@ -95,7 +93,7 @@ public class BookManagerControllerTests {
     @Test
     public void testPostMappingAddABook() throws Exception {
 
-        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.insertBook(book)).thenReturn(book);
 
@@ -110,7 +108,7 @@ public class BookManagerControllerTests {
 
     @Test public void testPostMappingAddABookIsFound() throws Exception {
 
-        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
 
@@ -126,7 +124,7 @@ public class BookManagerControllerTests {
     @Test
     public void testPutMappingUpdateABook() throws Exception {
 
-        Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
 
@@ -142,7 +140,7 @@ public class BookManagerControllerTests {
     @Test
     public void testPutMappingUpdateABookNotFound() throws Exception {
 
-        Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(null);
 
@@ -155,12 +153,10 @@ public class BookManagerControllerTests {
         verify(mockBookManagerServiceImpl, times(0)).updateBookById(book.getId(), book);
     }
 
-
-
     @Test
     public void testDeleteBookById() throws Exception {
         // Arrange
-        Book book = new Book(4000L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", Genre.Fantasy);
+        Book book = new Book(4000L, "Fabulous Four", "This is the description for the Fabulous Four", "Person Four", BookGenre.Fantasy);
         // Act
         when(mockBookManagerServiceImpl.getBookById(book.getId())).thenReturn(book);
 

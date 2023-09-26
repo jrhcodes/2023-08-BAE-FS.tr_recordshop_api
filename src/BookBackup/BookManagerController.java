@@ -1,7 +1,7 @@
-package com.techreturners.bookmanager.controller;
+package com.techreturners.recordshop.controller;
 
-import com.techreturners.bookmanager.model.Book;
-import com.techreturners.bookmanager.service.BookManagerService;
+import com.techreturners.recordshop.model.Book;
+import com.techreturners.recordshop.service.BookManagerService;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

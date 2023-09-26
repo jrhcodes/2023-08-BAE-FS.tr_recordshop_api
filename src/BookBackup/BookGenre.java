@@ -1,6 +1,6 @@
-package com.techreturners.bookmanager.model;
+package com.techreturners.recordshop.model;
 
-public enum Genre {
+public enum BookGenre {
     Thriller,
     Romance,
     Fantasy,

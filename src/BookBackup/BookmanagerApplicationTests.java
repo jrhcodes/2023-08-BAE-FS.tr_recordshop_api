@@ -1,4 +1,4 @@
-package com.techreturners.bookmanager;
+package com.techreturners.recordshop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

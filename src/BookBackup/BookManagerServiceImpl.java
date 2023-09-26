@@ -1,7 +1,7 @@
-package com.techreturners.bookmanager.service;
+package com.techreturners.recordshop.service;
 
-import com.techreturners.bookmanager.model.Book;
-import com.techreturners.bookmanager.repository.BookManagerRepository;
+import com.techreturners.recordshop.model.Book;
+import com.techreturners.recordshop.repository.BookManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class BookManagerServiceImpl implements BookManagerService {
         retrievedBook.setTitle(book.getTitle());
         retrievedBook.setDescription(book.getDescription());
         retrievedBook.setAuthor(book.getAuthor());
-        retrievedBook.setGenre(book.getGenre());
+        retrievedBook.setBookGenre(book.getBookGenre());
 
         bookManagerRepository.save(retrievedBook);
     }
@@ -49,6 +49,9 @@ public class BookManagerServiceImpl implements BookManagerService {
         bookManagerRepository.deleteById(id);
     }
 
-
+    @Override
+    public List<Book> getBooksWithIdGreaterThan10(){
+        return bookManagerRepository.findByIdGreaterThan(10L);
+    };
 
 }

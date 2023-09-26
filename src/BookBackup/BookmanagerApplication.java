@@ -1,4 +1,4 @@
-package com.techreturners.bookmanager;
+package com.techreturners.recordshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -24,7 +24,7 @@ using a Test-Driven Development approach.
 - Fork this repo to your Github and then clone the forked version of this repo
 
 ### Main Entry Point
-- The Main Entry Point for the application is: [BookmanagerApplication.java](src/main/java/com/techreturners/bookmanager/BookmanagerApplication.java)
+- The Main Entry Point for the application is: [BookmanagerApplication.java](src/BookBackup/BookmanagerApplication.java)
 
 ### Running the Unit Tests
 - You can run the unit tests in IntelliJ, or you can go to your terminal and inside the root of this directory, run:

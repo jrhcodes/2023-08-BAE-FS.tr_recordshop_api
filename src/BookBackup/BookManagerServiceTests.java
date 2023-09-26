@@ -1,9 +1,9 @@
-package com.techreturners.bookmanager.service;
+package com.techreturners.recordshop.service;
 
-import com.techreturners.bookmanager.model.Book;
-import com.techreturners.bookmanager.model.Genre;
+import com.techreturners.recordshop.model.Book;
+import com.techreturners.recordshop.model.BookGenre;
 
-import com.techreturners.bookmanager.repository.BookManagerRepository;
+import com.techreturners.recordshop.repository.BookManagerRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,9 +29,9 @@ public class BookManagerServiceTests {
     public void testGetAllBooksReturnsListOfBooks() {
 
         List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, "Book One", "This is the description for Book One", "Person One", Genre.Education));
-        books.add(new Book(2L, "Book Two", "This is the description for Book Two", "Person Two", Genre.Education));
-        books.add(new Book(3L, "Book Three", "This is the description for Book Three", "Person Three", Genre.Education));
+        books.add(new Book(1L, "Book One", "This is the description for Book One", "Person One", BookGenre.Education));
+        books.add(new Book(2L, "Book Two", "This is the description for Book Two", "Person Two", BookGenre.Education));
+        books.add(new Book(3L, "Book Three", "This is the description for Book Three", "Person Three", BookGenre.Education));
 
         when(mockBookManagerRepository.findAll()).thenReturn(books);
 
@@ -44,7 +44,7 @@ public class BookManagerServiceTests {
     @Test
     public void testAddABook() {
 
-        var book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", Genre.Fantasy);
+        var book = new Book(4L, "Book Four", "This is the description for Book Four", "Person Four", BookGenre.Fantasy);
 
         when(mockBookManagerRepository.save(book)).thenReturn(book);
 
@@ -57,7 +57,7 @@ public class BookManagerServiceTests {
     public void testGetBookById() {
 
         Long bookId = 5L;
-        var book = new Book(5L, "Book Five", "This is the description for Book Five", "Person Five", Genre.Fantasy);
+        var book = new Book(5L, "Book Five", "This is the description for Book Five", "Person Five", BookGenre.Fantasy);
 
         when(mockBookManagerRepository.findById(bookId)).thenReturn(Optional.of(book));
 
@@ -71,7 +71,7 @@ public class BookManagerServiceTests {
     public void testUpdateBookById() {
 
         Long bookId = 5L;
-        var book = new Book(5L, "Book Five", "This is the description for Book Five", "Person Five", Genre.Fantasy);
+        var book = new Book(5L, "Book Five", "This is the description for Book Five", "Person Five", BookGenre.Fantasy);
 
         when(mockBookManagerRepository.findById(bookId)).thenReturn(Optional.of(book));
         when(mockBookManagerRepository.save(book)).thenReturn(book);
@@ -79,6 +79,11 @@ public class BookManagerServiceTests {
         bookManagerServiceImpl.updateBookById(bookId, book);
 
         verify(mockBookManagerRepository, times(1)).save(book);
+    }
+
+    @Test
+    public void testGetBooksWithIdGreaterThan10() {
+        bookManagerServiceImpl.getBooksWithIdGreaterThan10();
     }
 
     @Test

@@ -1,7 +1,7 @@
-package com.techreturners.bookmanager.repository;
+package com.techreturners.recordshop.repository;
 
-import com.techreturners.bookmanager.model.Book;
-import com.techreturners.bookmanager.model.Genre;
+import com.techreturners.recordshop.model.Book;
+import com.techreturners.recordshop.model.BookGenre;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class BookManagerRepositoryTests {
     @Test
     public void testFindAllBooksReturnsBooks() {
 
-        Book book = new Book(1L, "Book One", "This is the description for Book One", "Person One", Genre.Education);
+        Book book = new Book(1L, "Book One", "This is the description for Book One", "Person One", BookGenre.Education);
         bookManagerRepository.save(book);
 
         Iterable<Book> books = bookManagerRepository.findAll();
@@ -29,7 +29,7 @@ public class BookManagerRepositoryTests {
     @Test
     public void testCreatesAndFindBookByIdReturnsBook() {
 
-        Book book = new Book(1L, "Book Two", "This is the description for Book Two", "Person Two", Genre.Fantasy);
+        Book book = new Book(1L, "Book Two", "This is the description for Book Two", "Person Two", BookGenre.Fantasy);
         bookManagerRepository.save(book);
 
         var bookById = bookManagerRepository.findById(book.getId());

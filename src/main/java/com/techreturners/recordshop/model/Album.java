@@ -1,21 +1,20 @@
-package com.techreturners.bookmanager.model;
+package com.techreturners.recordshop.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
-
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Book {
+public class Album {
 
     @Id
     @GeneratedValue
@@ -26,11 +25,14 @@ public class Book {
     String title;
 
     @Column
-    String description;
+    String artist;
 
     @Column
-    String author;
+    int releaseYear;
 
     @Column
     Genre genre;
+
+    @Column
+    Long stock;
 }

@@ -1,6 +1,6 @@
-package com.techreturners.bookmanager.service;
+package com.techreturners.recordshop.service;
 
-import com.techreturners.bookmanager.model.Book;
+import com.techreturners.recordshop.model.Book;
 
 import java.util.List;
 
@@ -14,4 +14,6 @@ public interface BookManagerService {
     void updateBookById(Long id, Book book);
 
   void deleteBookById(Long id );
+
+  public List<Book> getBooksWithIdGreaterThan10();
 }
