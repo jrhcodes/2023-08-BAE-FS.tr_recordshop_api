@@ -24,7 +24,6 @@ public class BookFinder {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, genre); // Set the genre parameter
 
-            // Execute the query
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
