@@ -27,7 +27,6 @@ public class BookFinder {
             // Execute the query
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Process the results
             while (resultSet.next()) {
                 int bookId = resultSet.getInt("id");
                 String title = resultSet.getString("title");
