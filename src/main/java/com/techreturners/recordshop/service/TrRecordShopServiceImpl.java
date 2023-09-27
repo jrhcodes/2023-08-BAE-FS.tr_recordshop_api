@@ -72,7 +72,6 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         trRecordShopRepository.save(retrievedAlbum);
     }
 
-
     public void deleteAlbumById(Long id) {
 
         Album retrievedAlbum = trRecordShopRepository.findById(id).orElse(null);
@@ -83,4 +82,5 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
 
         trRecordShopRepository.delete(retrievedAlbum);
     }
+
 }
