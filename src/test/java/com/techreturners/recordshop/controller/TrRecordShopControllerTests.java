@@ -153,5 +153,30 @@ public class TrRecordShopControllerTests {
 
         verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByReleaseYear(year);
     }
+    @ParameterizedTest
+    @ValueSource( strings = {"Pop", "Jazz", "Rock"} )
+    public void testGetAlbumsByGenre(Genre genre) throws Exception {
+
+        List<Album> albums = new ArrayList<>();
+        albums.add(new Album(1L, "Kind of Blue", "Miles Davis", 1959, Genre.Jazz, 3L));
+        albums.add(new Album(2L, "Thriller", "Michael Jackson", 1959, Genre.Pop, 1L));
+        albums.add(new Album(3L, "Abbey", "Beatles", 1982, Genre.Rock, 0L));
+
+        List<Album> filteredAlbums = albums.stream().filter(album -> album.getGenre().equals(genre)).toList();
+
+        when(mockTrRecordShopServiceImpl.getAlbumsByGenre(genre)).thenReturn(filteredAlbums);
+
+        ResultActions result = this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/album/genre/"+genre))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(filteredAlbums.size())))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        for( int i=0; i < filteredAlbums.size(); i++ ) {
+            result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(filteredAlbums.get(i).getId()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].genre").value(Matchers.equalToIgnoringCase(filteredAlbums.get(i).getGenre().toString())));
+            i++;
+        }
+
+        verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByGenre(genre);
+    }
 
 }

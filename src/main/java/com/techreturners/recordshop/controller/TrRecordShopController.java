@@ -2,6 +2,7 @@ package com.techreturners.recordshop.controller;
 
 
 import com.techreturners.recordshop.model.Album;
+import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.service.TrRecordShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,12 @@ public class TrRecordShopController {
     @GetMapping({"/year/{year}"})
     public ResponseEntity<List<Album>> getAlbumsByReleaseYear(@PathVariable int year) {
         List<Album> albums = trRecordShopService.getAlbumsByReleaseYear(year);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
+    @GetMapping({"/genre/{genre}"})
+    public ResponseEntity<List<Album>> getAlbumsByGenre(@PathVariable Genre genre) {
+        List<Album> albums = trRecordShopService.getAlbumsByGenre(genre);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 }
