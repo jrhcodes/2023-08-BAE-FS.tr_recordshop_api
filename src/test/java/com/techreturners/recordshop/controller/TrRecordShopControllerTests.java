@@ -242,4 +242,15 @@ public class TrRecordShopControllerTests {
 
         verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumStockById(album.getId(), album.getStock());
     }
+
+    @Test
+    public void testDeleteAlbumById() throws Exception {
+
+        Long id = 10L;
+
+        this.mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/album/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(mockTrRecordShopServiceImpl, times(1)).deleteAlbumById(id);
+    }
 }

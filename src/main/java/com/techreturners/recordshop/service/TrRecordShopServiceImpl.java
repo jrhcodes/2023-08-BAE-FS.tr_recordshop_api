@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.springframework.util.ClassUtils.isPresent;
-
 @Service
 public class TrRecordShopServiceImpl implements TrRecordShopService {
 
@@ -44,7 +42,7 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
     }
 
     public List<Album> getAlbumsByTitle(String title) {
-        return trRecordShopRepository.findAllAlbumsByTitleContainingIgnoreCase( title);
+        return trRecordShopRepository.findAllAlbumsByTitleContainingIgnoreCase(title);
     }
 
 
@@ -63,7 +61,7 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         trRecordShopRepository.save(album);
     }
 
-public void updateAlbumStockById(Long id, Long stock) {
+    public void updateAlbumStockById(Long id, Long stock) {
 
         Album retrievedAlbum = trRecordShopRepository.findById(id).orElse(null);
 
@@ -72,5 +70,17 @@ public void updateAlbumStockById(Long id, Long stock) {
         }
         retrievedAlbum.setStock(stock);
         trRecordShopRepository.save(retrievedAlbum);
+    }
+
+
+    public void deleteAlbumById(Long id) {
+
+        Album retrievedAlbum = trRecordShopRepository.findById(id).orElse(null);
+
+        if (retrievedAlbum == null) {
+            throw new AlbumNotFoundException("Album not found with ID: " + id);
+        }
+
+        trRecordShopRepository.delete(retrievedAlbum);
     }
 }

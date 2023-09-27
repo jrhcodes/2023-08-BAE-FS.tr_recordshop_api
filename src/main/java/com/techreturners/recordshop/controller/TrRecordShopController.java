@@ -73,4 +73,10 @@ public class TrRecordShopController {
         trRecordShopService.updateAlbumStockById(id, stock);
         return new ResponseEntity<>(String.valueOf(stock), HttpStatus.OK);
     }
+
+    @DeleteMapping({"/{id}"})
+    public ResponseEntity<String> deleteAlbumById(@PathVariable("id") Long id) {
+        trRecordShopService.deleteAlbumById(id);
+        return new ResponseEntity<>(String.valueOf(id), HttpStatus.OK);
+    }
 }

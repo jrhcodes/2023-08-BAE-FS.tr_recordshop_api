@@ -23,4 +23,6 @@ public interface TrRecordShopService {
     void updateAlbumById(Long id, Album album);
 
     void updateAlbumStockById(Long id, Long stock);
+
+    void deleteAlbumById(Long id);
 }

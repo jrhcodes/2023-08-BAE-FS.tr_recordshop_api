@@ -19,7 +19,5 @@ public interface TrRecordShopRepository extends JpaRepository<Album, Long> {
     List<Album> findAllAlbumsByGenre(Genre genre);
 
     List<Album> findAllAlbumsByTitleContainingIgnoreCase(String title);
-
-    List<Album> findAllAlbumByTitleContainingIgnoreCase(String title);
 }
 
