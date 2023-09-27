@@ -35,4 +35,6 @@ public class Album {
 
     @Column
     Long stock;
+
+
 }

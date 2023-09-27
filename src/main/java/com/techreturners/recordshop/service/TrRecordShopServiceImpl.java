@@ -16,8 +16,7 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
 
     @Override
     public List<Album> getAllAlbums() {
-        List<Album> albums = new ArrayList<>();
-        albums.addAll(trRecordShopRepository.findAll());
+        List<Album> albums = trRecordShopRepository.findAll();
         System.out.println(albums);
         return albums;
     }
@@ -27,5 +26,13 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         List<Album> albums = trRecordShopRepository.findByStockGreaterThan(0L);
         System.out.println(albums);
         return albums;
+    }
+
+    public List<Album> getAlbumsByArtist(String artist){
+        return trRecordShopRepository.findAllAlbumsByArtistContainingIgnoreCase(artist);
+    }
+
+    public List<Album> getAlbumsByReleaseYear(int year) {
+        return trRecordShopRepository.findAllAlbumsByReleaseYear(year);
     }
 }

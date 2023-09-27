@@ -8,4 +8,7 @@ public interface TrRecordShopService {
     List<Album> getAllAlbums();
 
     List<Album> getAlbumsInStock();
+
+    List<Album> getAlbumsByArtist(String Artist);
+    public List<Album> getAlbumsByReleaseYear(int year);
 }
