@@ -220,8 +220,6 @@ public class TrRecordShopControllerTests {
 
         Album album = new Album(4L, "Fabulous Four", "This is the description for the Fabulous Four", 1911, Genre.Rock, 0L);
 
-//        when(mockTrRecordShopServiceImpl.getAlbumsById(album.getId())).thenReturn(album);
-
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.put("/api/v1/album/" + album.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -231,4 +229,17 @@ public class TrRecordShopControllerTests {
         verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumById(album.getId(), album);
     }
 
+    @Test
+    public void testPutMappingUpdateStock() throws Exception {
+
+        Album album = new Album(4L, "Fabulous Four", "This is the description for the Fabulous Four", 1911, Genre.Rock, 20L);
+
+        this.mockMvcController.perform(
+            MockMvcRequestBuilders.put("/api/v1/album/stock/" + album.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(album.getStock())))
+                    .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumStockById(album.getId(), album.getStock());
+    }
 }

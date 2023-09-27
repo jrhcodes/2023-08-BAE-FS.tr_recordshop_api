@@ -68,4 +68,9 @@ public class TrRecordShopController {
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
+    @PutMapping({"/stock/{id}"})
+    public ResponseEntity<String> updateAlbumStockById(@PathVariable("id") Long id, @RequestBody Long stock) {
+        trRecordShopService.updateAlbumStockById(id, stock);
+        return new ResponseEntity<>(String.valueOf(stock), HttpStatus.OK);
+    }
 }
