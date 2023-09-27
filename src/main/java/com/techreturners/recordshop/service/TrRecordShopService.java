@@ -17,4 +17,8 @@ public interface TrRecordShopService {
     List<Album> getAlbumsByGenre(Genre genre);
 
     List<Album> getAlbumsByTitle(String title);
+
+    Album insertAlbum(Album album);
+
+    void updateAlbumById(Long id, Album album);
 }

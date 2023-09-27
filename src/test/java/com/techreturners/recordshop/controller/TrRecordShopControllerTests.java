@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class TrRecordShopControllerTests {
 
-    //mockBookManagerServiceImpl: A mock implementation of the mockTrRecordShopServiceImpl class.
+    //mockTrRecordShopServiceImpl: A mock implementation of the mockTrRecordShopServiceImpl class.
     // This is used to simulate the behavior of the real service in the test.
     @Mock
     private TrRecordShopServiceImpl mockTrRecordShopServiceImpl;
@@ -198,5 +199,36 @@ public class TrRecordShopControllerTests {
         verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByTitle(title);
     }
 
+    @Test
+    public void testPostMappingAddAlbum() throws Exception {
+
+        Album album = new Album(4L, "Album Four", "This is the description for Album Four", 1979, Genre.Rock, 0L);
+
+        when(mockTrRecordShopServiceImpl.insertAlbum(album)).thenReturn(album);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/album/")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        verify(mockTrRecordShopServiceImpl, times(1)).insertAlbum(album);
+    }
+
+    @Test
+    public void testPutMappingUpdateAlbum() throws Exception {
+
+        Album album = new Album(4L, "Fabulous Four", "This is the description for the Fabulous Four", 1911, Genre.Rock, 0L);
+
+//        when(mockTrRecordShopServiceImpl.getAlbumsById(album.getId())).thenReturn(album);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/album/" + album.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumById(album.getId(), album);
+    }
 
 }

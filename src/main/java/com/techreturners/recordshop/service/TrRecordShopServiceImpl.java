@@ -1,5 +1,6 @@
 package com.techreturners.recordshop.service;
 
+import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
 import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.repository.TrRecordShopRepository;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.util.ClassUtils.isPresent;
 
 @Service
 public class TrRecordShopServiceImpl implements TrRecordShopService {
@@ -42,6 +45,22 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
 
     public List<Album> getAlbumsByTitle(String title) {
         return trRecordShopRepository.findAllAlbumsByTitleContainingIgnoreCase( title);
+    }
+
+
+    public Album insertAlbum(Album album) {
+        return trRecordShopRepository.save(album);
+    }
+
+    public void updateAlbumById(Long id, Album album) {
+
+        Album retrievedAlbum = trRecordShopRepository.findById(id).orElse(null);
+
+        if (retrievedAlbum == null) {
+            throw new AlbumNotFoundException("Album not found with ID: " + album.getId());
+        }
+        album.setStock(retrievedAlbum.getStock());
+        trRecordShopRepository.save(album);
     }
 
 }
