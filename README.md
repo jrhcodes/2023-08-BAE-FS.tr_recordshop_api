@@ -1,63 +1,132 @@
-# 📖 Minimalist Book Manager API
+# TR Record Shop API
 
-## Student Notes
-I put the logic for the more useful responses in the control layer but now feel that it might have been better to put it in the service layer and then throw exceptions from that, which could be intercepted in the control layer and I will do this at some later date, feedback dependent.
-I tried to test the exception handling I had added but because none of the service or control layer functions threw exceptions this wasn't possible.  
+## Project description
 
+Our MVP is an API backend for a music record shop. The backend system will store information about the records in stock, allowing us to query this data using various criteria such as title, year, genre, artists, and stock levels. Additionally, we have implemented functionality for updating and deleting records.
 
-## Introduction
-This is the starter repository for the Further APIs session. It provides a start to creating a Minimalist Book Manager API
-using a Test-Driven Development approach.
+The project is developed using Java, Spring Boot, H2 database, postgresql, lombok, JUnit 5, and Maven.
 
-### Pre-Requisites
-- Java SE Development Kit 17
-- Maven
+We made the assumption that the "genre" field is represented as an enum rather than a string. This decision is based on the assumption that the frontend will feature a dropdown menu with predefined values for selecting a genre.
 
-### Technologies & Dependencies
-- Spring Boot
-- Spring Web
-- H2 Database
-- Lombok
-- Spring Data JPA
+## Installation
 
-### How to Get Started
-- Fork this repo to your Github and then clone the forked version of this repo
+Please ensure that you have Java and Maven installed on your computer. To run the unit tests, use the command 'mvn test'.
 
-### Main Entry Point
-- The Main Entry Point for the application is: [BookmanagerApplication.java](src/BookBackup/BookmanagerApplication.java)
+## Approaches
 
-### Running the Unit Tests
-- You can run the unit tests in IntelliJ, or you can go to your terminal and inside the root of this directory, run:
+We are a team of 3, and our approach to the task begins with designing the API structure and service layer functionality. Next, we have collaboratively code the solution, with one team member taking the lead as the driver.
 
-`mvn test`
+### API Structure:
 
-### Tasks
+#### Base URL /api/v1/album
 
-Here are some tasks for you to work on:
-
-📘 Discussion Task
-
-Explore the code and make notes on the following features and how it is being implemented in the code. We'd like you to note down what classes and methods are used and how the objects interact.
-
-The features are:
-- Get All Books
-- Get a Book by ID
-- Add a Book
-- Update a Book
-- Delete a book
-
-📘 Task 1: Implement the following User Story with tests.
-
-`User Story: As a user, I want to use the Book Manager API to delete a book using its ID`
+#### get all albums in stock
+* /instock
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status:
 
 
-📘 Extension Task: Oh no! 😭 We've only covered the happy paths in the solution, can you figure out a way
-to add in exception handling to the project? 
+#### get all albums by a given artist
+* GET /artist
+* parameter: artist
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status: 404 unknown artist
 
-- Clue 1: What if someone wants to add a book with an ID for a book that already exists? How do we handle this gracefully?
 
-- Clue 2: What if someone wants to find a book by an ID that doesn't yet exist? 
+#### get all albums by a given release year
+* GET /year
+* parameter: releasedYear
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status: invalid year (not a number, out of range)
 
-- How can we improve the API by handling errors gracefully and show a helpful message to the client?
-  
-  
+
+#### get all albums by a given genre
+* GET /genre
+* parameter: genre
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status: 404 - unknown genre
+
+
+#### get album information by album title
+* GET /title
+* parameter: title
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status: 404 - missing or invalid title string
+
+
+#### add new album into the database
+* POST /
+* parameters: title, artist, releasedYear, genre.
+* return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
+* error status: if (artist, releasedYear and title) match another record - return error.
+
+
+#### update album details
+* PUT /
+* parameters: id, title, artist, releasedYear, genre.
+* error status: if (artist, year and title) match a record other than the one being edited - return error.
+* error status: unknown id
+
+
+#### update stock amounts of a particular album
+* PATCH /stock
+* parameters: id, stock
+* error status: unknown id
+* error status: stock >= 0
+
+
+#### delete albums from the inventory
+* DELETE /
+* parameters: id
+* error status: unknown id
+
+### Service Layer Functionality:
+
+
+#### getAlbumsInStock()
+- returns list of all albums in stock 
+- findByStockGreaterThan(0)
+
+#### getAlbumsByArtist( String artist)
+- Returns a list of all albums by artist
+- findAllAlbumsByArtistContainingIgnoreCase(String artist)
+
+#### getAlbumByYear( int year)
+- Returns list of all albums for given year
+- findAllAlbumsByYear( int year)
+
+#### getAlbumsByGenre( Genre genre)
+- Returns a list of all albums by genre
+- findAllAlbumsByGenre( Genre genre)
+
+#### getAlbumsByTitle(String title)
+- Returns list of albums with the given title
+- findAllAlbumsByTitleContainingIgnoreCase( String title)
+
+#### insertAlbum( Album album )
+- Calls repo.save(album)
+
+#### updateAlbumById( Album album) - album = findById(id)
+- repo.save(album)
+
+#### updateAlbumStockById( long id, int stock ) - album = findById(id)
+- repo.save(album)
+
+#### deleteAlbumById( long id ) - album = findById
+- repo.delete(album)
+
+### Database Tables:
+
+#### Albums
+
+| ID           | integer - auto-increment | 
+|--------------|:------------------------:| 
+| title        |          string          | 
+| artist       |          string          | 
+| releasedYear |         integer          | 
+| genre        |           enum           | 
+| stock        |         integer          | 
+
+## Future Roadmap
+
+We plan to add a frontend to connect with our backend. The frontend will allow users to browse the music catalog, search for and purchase albums. Additionally, we can create an admin frontend to manage stock levels.
