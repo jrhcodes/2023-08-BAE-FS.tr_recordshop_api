@@ -26,8 +26,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 
 //When you use @AutoConfigureMockMvc, Spring Boot will automatically configure a MockMvc instance for you.
@@ -88,13 +86,12 @@ public class TrRecordShopControllerTests {
 
         ResultActions result = this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/album/instock"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(albumsInStock.size())));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(albumsInStock.size())));
 
 
         for( int i=0; i < albumsInStock.size(); i++ ) {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(albumsInStock.get(i).getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].title").value(albumsInStock.get(i).getTitle()));
-                i++;
         }
 
         verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsInStock();
@@ -120,7 +117,6 @@ public class TrRecordShopControllerTests {
         for( int i=0; i < filteredAlbums.size(); i++ ) {
             result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(filteredAlbums.get(i).getId()))
                     .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].title").value(Matchers.equalToIgnoringCase(filteredAlbums.get(i).getTitle())));
-            i++;
         }
 
 
@@ -148,7 +144,6 @@ public class TrRecordShopControllerTests {
         for( int i=0; i < filteredAlbums.size(); i++ ) {
             result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(filteredAlbums.get(i).getId()))
                     .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].releaseYear").value(year));
-            i++;
         }
 
         verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByReleaseYear(year);
@@ -173,10 +168,35 @@ public class TrRecordShopControllerTests {
         for( int i=0; i < filteredAlbums.size(); i++ ) {
             result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(filteredAlbums.get(i).getId()))
                     .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].genre").value(Matchers.equalToIgnoringCase(filteredAlbums.get(i).getGenre().toString())));
-            i++;
         }
 
         verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByGenre(genre);
     }
+
+    @ParameterizedTest
+    @CsvSource( {"e", "b", "Thrill", "FAIL"} )
+    public void testGetAlbumsByTitle(String title) throws Exception {
+
+        List<Album> albums = new ArrayList<>();
+        albums.add(new Album(1L, "Kind of Blue", "Miles Davis", 1959, Genre.Jazz, 3L));
+        albums.add(new Album(2L, "Thriller", "Michael Jackson", 1959, Genre.Pop, 1L));
+        albums.add(new Album(3L, "Abbey", "Beatles", 1982, Genre.Rock, 0L));
+
+        List<Album> filteredAlbums = albums.stream().filter(album -> album.getTitle().toLowerCase().contains(title.toLowerCase())).toList();
+
+        when(mockTrRecordShopServiceImpl.getAlbumsByTitle(title)).thenReturn(filteredAlbums);
+
+        ResultActions result = this.mockMvcController.perform(MockMvcRequestBuilders.get("/api/v1/album/title/"+title))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(filteredAlbums.size())))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        for( int i=0; i < filteredAlbums.size(); i++ ) {
+            result.andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].id").value(filteredAlbums.get(i).getId()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$["+i+"].title").value(Matchers.equalToIgnoringCase(filteredAlbums.get(i).getTitle())));
+        }
+
+        verify(mockTrRecordShopServiceImpl, times(1)).getAlbumsByTitle(title);
+    }
+
 
 }

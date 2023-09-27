@@ -11,7 +11,10 @@ public interface TrRecordShopService {
     List<Album> getAlbumsInStock();
 
     List<Album> getAlbumsByArtist(String Artist);
+
     List<Album> getAlbumsByReleaseYear(int year);
 
     List<Album> getAlbumsByGenre(Genre genre);
+
+    List<Album> getAlbumsByTitle(String title);
 }

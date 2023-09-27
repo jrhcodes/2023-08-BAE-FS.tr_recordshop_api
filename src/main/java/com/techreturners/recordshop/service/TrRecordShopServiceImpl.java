@@ -6,7 +6,6 @@ import com.techreturners.recordshop.repository.TrRecordShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +28,7 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         return albums;
     }
 
-    public List<Album> getAlbumsByArtist(String artist){
+    public List<Album> getAlbumsByArtist(String artist) {
         return trRecordShopRepository.findAllAlbumsByArtistContainingIgnoreCase(artist);
     }
 
@@ -39,6 +38,10 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
 
     public List<Album> getAlbumsByGenre(Genre genre) {
         return trRecordShopRepository.findAllAlbumsByGenre(genre);
+    }
+
+    public List<Album> getAlbumsByTitle(String title) {
+        return trRecordShopRepository.findAllAlbumsByTitleContainingIgnoreCase( title);
     }
 
 }

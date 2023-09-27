@@ -50,4 +50,10 @@ public class TrRecordShopController {
         List<Album> albums = trRecordShopService.getAlbumsByGenre(genre);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
+
+    @GetMapping({"/title/{title}"})
+    public ResponseEntity<List<Album>> getAlbumsByTitle(@PathVariable String title) {
+        List<Album> albums = trRecordShopService.getAlbumsByTitle(title);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
 }
