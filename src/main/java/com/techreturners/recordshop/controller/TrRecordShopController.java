@@ -1,6 +1,7 @@
 package com.techreturners.recordshop.controller;
 
 
+import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
 import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.service.TrRecordShopService;
@@ -76,7 +77,11 @@ public class TrRecordShopController {
 
     @DeleteMapping({"/{id}"})
     public ResponseEntity<String> deleteAlbumById(@PathVariable("id") Long id) {
-        trRecordShopService.deleteAlbumById(id);
+        try {
+            trRecordShopService.deleteAlbumById(id);
+        } catch (AlbumNotFoundException e) {
+            return new ResponseEntity<>(String.valueOf(id), HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(String.valueOf(id), HttpStatus.OK);
     }
 }

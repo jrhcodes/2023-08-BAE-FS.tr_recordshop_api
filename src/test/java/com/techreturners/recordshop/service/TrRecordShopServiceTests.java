@@ -1,5 +1,6 @@
 package com.techreturners.recordshop.service;
 
+import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
 import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.repository.TrRecordShopRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @DataJpaTest
@@ -85,6 +87,14 @@ public class TrRecordShopServiceTests {
         when(mockTrRecordShopRepository.findById(album.getId())).thenReturn(Optional.of(album));
         TrRecordShopServiceImpl.deleteAlbumById(album.getId());
         verify(mockTrRecordShopRepository, times(1)).delete(album);
+    }
+
+    @Test
+    public void testDeleteAlbumByIdNotFound () {
+        Album album = new Album(5L, "Album Five", "This is the description for Album Five", 2001, Genre.Rock, 0L);
+        when(mockTrRecordShopRepository.findById(album.getId())).thenReturn(Optional.empty());
+        assertThrows(AlbumNotFoundException.class, () -> TrRecordShopServiceImpl.deleteAlbumById(album.getId()));
+        verify(mockTrRecordShopRepository, times(0)).delete(album);
     }
 
 }

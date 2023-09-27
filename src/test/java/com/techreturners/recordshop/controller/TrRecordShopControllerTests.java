@@ -1,6 +1,7 @@
 package com.techreturners.recordshop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
 import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.service.TrRecordShopServiceImpl;
@@ -253,4 +254,20 @@ public class TrRecordShopControllerTests {
 
         verify(mockTrRecordShopServiceImpl, times(1)).deleteAlbumById(id);
     }
+
+    @Test
+    public void testDeleteAlbumByIdThrowsNotFound() throws Exception {
+        Long id = 10L;
+
+        // Configure the mock to throw AlbumNotFoundException
+        doThrow(AlbumNotFoundException.class).when(mockTrRecordShopServiceImpl).deleteAlbumById(id);
+
+        mockMvcController.perform(MockMvcRequestBuilders.delete("/api/v1/album/" + id))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        // Verify that the deleteAlbumById method was called with the specified ID
+        verify(mockTrRecordShopServiceImpl, times(1)).deleteAlbumById(id);
+    }
+
+
 }
