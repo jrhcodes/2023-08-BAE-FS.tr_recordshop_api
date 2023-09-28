@@ -2,7 +2,6 @@ package com.techreturners.recordshop.service;
 
 import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
-import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.repository.TrRecordShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,8 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         return trRecordShopRepository.findAllAlbumsByReleaseYear(year);
     }
 
-    public List<Album> getAlbumsByGenre(Genre genre) {
-        return trRecordShopRepository.findAllAlbumsByGenre(genre);
+    public List<Album> getAlbumsByGenre(String genre) {
+        return trRecordShopRepository.findAllAlbumsByGenreContainingIgnoreCase(genre);
     }
 
     public List<Album> getAlbumsByTitle(String title) {
@@ -47,7 +46,7 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
 
 
     public Album insertAlbum(Album album) {
-        return trRecordShopRepository.save(album);
+        return trRecordShopRepository.save(new Album(null, album.getTitle(), album.getArtist(), album.getReleaseYear(), album.getGenre(), album.getStock()));
     }
 
     public void updateAlbumById(Long id, Album album) {

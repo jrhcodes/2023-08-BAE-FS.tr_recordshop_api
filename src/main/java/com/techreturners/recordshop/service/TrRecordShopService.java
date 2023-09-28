@@ -1,7 +1,6 @@
 package com.techreturners.recordshop.service;
 
 import com.techreturners.recordshop.model.Album;
-import com.techreturners.recordshop.model.Genre;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface TrRecordShopService {
 
     List<Album> getAlbumsByReleaseYear(int year);
 
-    List<Album> getAlbumsByGenre(Genre genre);
+    List<Album> getAlbumsByGenre(String genre);
 
     List<Album> getAlbumsByTitle(String title);
 

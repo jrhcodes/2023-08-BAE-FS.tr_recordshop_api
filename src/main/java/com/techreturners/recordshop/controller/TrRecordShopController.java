@@ -3,7 +3,6 @@ package com.techreturners.recordshop.controller;
 
 import com.techreturners.recordshop.exceptions.AlbumNotFoundException;
 import com.techreturners.recordshop.model.Album;
-import com.techreturners.recordshop.model.Genre;
 import com.techreturners.recordshop.service.TrRecordShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -20,13 +19,19 @@ public class TrRecordShopController {
     @Autowired
     TrRecordShopService trRecordShopService;
 
+
     @GetMapping
     public ResponseEntity<List<Album>> getAllAlbums() {
         List<Album> albums = trRecordShopService.getAllAlbums();
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
-    @GetMapping({"/instock"})
+    @GetMapping("/info")
+    public ResponseEntity<String> getInfoResponse() {
+        return new ResponseEntity<>("Hello and welcome to TR Record Shop!", HttpStatus.OK);
+    }
+
+    @GetMapping("/instock")
     public ResponseEntity<List<Album>> getAllAlbumsInStock() {
         List<Album> albums = trRecordShopService.getAlbumsInStock();
         return new ResponseEntity<>(albums, HttpStatus.OK);
@@ -45,7 +50,7 @@ public class TrRecordShopController {
     }
 
     @GetMapping({"/genre/{genre}"})
-    public ResponseEntity<List<Album>> getAlbumsByGenre(@PathVariable Genre genre) {
+    public ResponseEntity<List<Album>> getAlbumsByGenre(@PathVariable String genre) {
         List<Album> albums = trRecordShopService.getAlbumsByGenre(genre);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
@@ -63,8 +68,10 @@ public class TrRecordShopController {
         httpHeaders.add("album", "/api/v1/album/" + newAlbum.getId().toString());
         return new ResponseEntity<>(newAlbum, httpHeaders, HttpStatus.CREATED);
     }
+
     @PutMapping({"/{id}"})
     public ResponseEntity<Album> updateAlbumById(@PathVariable("id") Long id, @RequestBody Album album) {
+        // album.setId(id);
         trRecordShopService.updateAlbumById(id, album);
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
@@ -77,11 +84,13 @@ public class TrRecordShopController {
 
     @DeleteMapping({"/{id}"})
     public ResponseEntity<String> deleteAlbumById(@PathVariable("id") Long id) {
+
         try {
             trRecordShopService.deleteAlbumById(id);
         } catch (AlbumNotFoundException e) {
             return new ResponseEntity<>(String.valueOf(id), HttpStatus.NOT_FOUND);
         }
+
         return new ResponseEntity<>(String.valueOf(id), HttpStatus.OK);
     }
 }

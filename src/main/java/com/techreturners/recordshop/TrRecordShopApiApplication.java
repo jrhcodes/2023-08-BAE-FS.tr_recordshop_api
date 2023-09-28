@@ -9,5 +9,4 @@ public class TrRecordShopApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(TrRecordShopApiApplication.class, args);
     }
-
 }

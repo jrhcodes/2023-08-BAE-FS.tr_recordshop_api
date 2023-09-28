@@ -19,22 +19,21 @@ public class Album {
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)
-    Long id;
+    private Long id;
 
     @Column
-    String title;
+    private String title;
 
     @Column
-    String artist;
+    private String artist;
 
     @Column
-    int releaseYear;
+    private int releaseYear;
 
     @Column
-    Genre genre;
+    private String genre;
 
     @Column
-    Long stock;
-
+    private Long stock;
 
 }

@@ -1,7 +1,6 @@
 package com.techreturners.recordshop.repository;
 
 import com.techreturners.recordshop.model.Album;
-import com.techreturners.recordshop.model.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,7 @@ public interface TrRecordShopRepository extends JpaRepository<Album, Long> {
 
     List<Album> findAllAlbumsByReleaseYear(int year);
 
-    List<Album> findAllAlbumsByGenre(Genre genre);
+    List<Album> findAllAlbumsByGenreContainingIgnoreCase(String genre);
 
     List<Album> findAllAlbumsByTitleContainingIgnoreCase(String title);
 }
