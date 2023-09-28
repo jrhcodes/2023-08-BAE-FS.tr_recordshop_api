@@ -42,7 +42,7 @@ We are a team of 3, and our approach to the task begins with designing the API s
 
 #### get all albums by a given genre
 * GET /genre
-* parameter: genre
+* parameter: genre (now implemented as a string)
 * return: array of albums [{id, title, artist, releasedYear, genre, stock}, ... ]
 * error status: 404 - unknown genre
 
@@ -124,7 +124,7 @@ We are a team of 3, and our approach to the task begins with designing the API s
 | title        |          string          | 
 | artist       |          string          | 
 | releasedYear |         integer          | 
-| genre        |           enum           | 
+| genre        |          string          | - originally implemented as enum 
 | stock        |         integer          | 
 
 ## Future Roadmap
