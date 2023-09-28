@@ -28,44 +28,46 @@ public class TrRecordShopDatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (trRecordShopRepository.count() == 0) {
-            System.out.println("Album repository is empty. Initialising...");
-            populateDatabaseIfEmpty();
-            System.out.println("... album repository initialised with " + trRecordShopRepository.count() + " records.");
-        }
+        populateDatabaseIfEmpty();
     }
 
     public void populateDatabaseIfEmpty() {
-        try {
-            String cwd = System.getProperty("user.dir");
-            final String fileName = "./src/main/resources/albumlist.tsv";
+        if (trRecordShopRepository.count() == 0) {
+            System.out.println("Album repository is empty. Initialising...");
 
-            File file = new File(fileName);
-            byte[] bytes = new byte[(int) file.length()];
+            try {
+                String cwd = System.getProperty("user.dir");
+                final String fileName = "./src/main/resources/albumlist.tsv";
 
-            FileInputStream fis = new FileInputStream(file);
-            fis.read(bytes);
-            fis.close();
+                File file = new File(fileName);
+                byte[] bytes = new byte[(int) file.length()];
 
-            final String fileContent = new String(bytes, StandardCharsets.UTF_8);
+                FileInputStream fis = new FileInputStream(file);
+                fis.read(bytes);
+                fis.close();
 
-            String[] fileLines = fileContent.split("\n");
+                final String fileContent = new String(bytes, StandardCharsets.UTF_8);
 
-            for (String fileLine : fileLines) {
-                String[] csvValues = fileLine.split("\t");
-                int releaseYear = Integer.parseInt(csvValues[1]);
-                String title = csvValues[2];
-                String artist = csvValues[3];
-                String genre = csvValues[4];
-                Long stock = 0L;
-                Album album = new Album(0L, title, artist, releaseYear, genre, stock);
-                trRecordShopServiceImpl.insertAlbum(album);
+                String[] fileLines = fileContent.split("\n");
+
+                for (String fileLine : fileLines) {
+                    String[] csvValues = fileLine.split("\t");
+                    int releaseYear = Integer.parseInt(csvValues[1]);
+                    String title = csvValues[2];
+                    String artist = csvValues[3];
+                    String genre = csvValues[4];
+                    Long stock = 0L;
+                    Album album = new Album(0L, title, artist, releaseYear, genre, stock);
+                    trRecordShopServiceImpl.insertAlbum(album);
+                }
+
+                System.out.println("... album repository initialised with " + trRecordShopRepository.count() + " records.");
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
-
 }

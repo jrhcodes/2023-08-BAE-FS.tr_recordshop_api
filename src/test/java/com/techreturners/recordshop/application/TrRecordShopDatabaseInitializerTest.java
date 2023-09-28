@@ -42,4 +42,17 @@ public class TrRecordShopDatabaseInitializerTest {
         trRecordShopDatabaseInitializer.populateDatabaseIfEmpty();
         verify(trRecordShopServiceImpl, times(500)).insertAlbum(Mockito.any(Album.class));
     }
+
+    @Test
+    public void populateDatabaseIfNotEmptyTest() {
+        when(trRecordShopRepository.count()).thenReturn(1L);
+        when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer(new Answer<Album>() {
+            @Override
+            public Album answer(InvocationOnMock invocation) throws Throwable {
+                return invocation.getArgument(0);
+            }
+        });
+        trRecordShopDatabaseInitializer.populateDatabaseIfEmpty();
+        verify(trRecordShopServiceImpl, times(0)).insertAlbum(Mockito.any(Album.class));
+    }
 }
