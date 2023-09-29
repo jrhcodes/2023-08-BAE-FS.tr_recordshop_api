@@ -9,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,12 +32,7 @@ public class TrRecordShopDatabaseInitializerTest {
     @Test
     public void populateDatabaseIfEmptyTest() throws Exception {
         when(trRecordShopRepository.count()).thenReturn(0L);
-        when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer(new Answer<Album>() {
-            @Override
-            public Album answer(InvocationOnMock invocation) throws Throwable {
-                return invocation.getArgument(0);
-            }
-        });
+        when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer((Answer<Album>) invocation -> invocation.getArgument(0));
         trRecordShopDatabaseInitializer.populateDatabaseIfEmpty();
         verify(trRecordShopServiceImpl, times(trRecordShopDatabaseInitializer.numberOfRecordsInBaseAlbumData())).insertAlbum(Mockito.any(Album.class));
     }
@@ -46,12 +40,7 @@ public class TrRecordShopDatabaseInitializerTest {
     @Test
     public void populateDatabaseIfNotEmptyTest() throws Exception {
         when(trRecordShopRepository.count()).thenReturn(1L);
-        when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer(new Answer<Album>() {
-            @Override
-            public Album answer(InvocationOnMock invocation) throws Throwable {
-                return invocation.getArgument(0);
-            }
-        });
+        when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer((Answer<Album>) invocation -> invocation.getArgument(0));
         trRecordShopDatabaseInitializer.populateDatabaseIfEmpty();
         verify(trRecordShopServiceImpl, times(0)).insertAlbum(Mockito.any(Album.class));
     }
