@@ -31,7 +31,7 @@ public class TrRecordShopDatabaseInitializerTest {
     private TrRecordShopDatabaseInitializer trRecordShopDatabaseInitializer;
 
     @Test
-    public void populateDatabaseIfEmptyTest() {
+    public void populateDatabaseIfEmptyTest() throws Exception {
         when(trRecordShopRepository.count()).thenReturn(0L);
         when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer(new Answer<Album>() {
             @Override
@@ -40,11 +40,11 @@ public class TrRecordShopDatabaseInitializerTest {
             }
         });
         trRecordShopDatabaseInitializer.populateDatabaseIfEmpty();
-        verify(trRecordShopServiceImpl, times(500)).insertAlbum(Mockito.any(Album.class));
+        verify(trRecordShopServiceImpl, times(trRecordShopDatabaseInitializer.numberOfRecordsInBaseAlbumData())).insertAlbum(Mockito.any(Album.class));
     }
 
     @Test
-    public void populateDatabaseIfNotEmptyTest() {
+    public void populateDatabaseIfNotEmptyTest() throws Exception {
         when(trRecordShopRepository.count()).thenReturn(1L);
         when(trRecordShopServiceImpl.insertAlbum(Mockito.any(Album.class))).thenAnswer(new Answer<Album>() {
             @Override
