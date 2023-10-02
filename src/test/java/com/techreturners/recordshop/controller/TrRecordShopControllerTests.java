@@ -226,7 +226,7 @@ public class TrRecordShopControllerTests {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(album)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumById(album.getId(), album);
+        verify(mockTrRecordShopServiceImpl, times(1)).updateAlbumById(album);
     }
 
     @Test

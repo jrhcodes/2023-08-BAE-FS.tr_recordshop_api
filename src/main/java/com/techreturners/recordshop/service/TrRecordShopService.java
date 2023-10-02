@@ -19,7 +19,7 @@ public interface TrRecordShopService {
 
     Album insertAlbum(Album album);
 
-    void updateAlbumById(Long id, Album album);
+    void updateAlbumById(Album album);
 
     void updateAlbumStockById(Long id, Long stock);
 

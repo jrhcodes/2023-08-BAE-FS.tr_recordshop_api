@@ -49,9 +49,9 @@ public class TrRecordShopServiceImpl implements TrRecordShopService {
         return trRecordShopRepository.save(new Album(null, album.getTitle(), album.getArtist(), album.getReleaseYear(), album.getGenre(), album.getStock()));
     }
 
-    public void updateAlbumById(Long id, Album album) {
+    public void updateAlbumById(Album album) {
 
-        Album retrievedAlbum = trRecordShopRepository.findById(id).orElse(null);
+        Album retrievedAlbum = trRecordShopRepository.findById(album.getId()).orElse(null);
 
         if (retrievedAlbum == null) {
             throw new AlbumNotFoundException("Album not found with ID: " + album.getId());

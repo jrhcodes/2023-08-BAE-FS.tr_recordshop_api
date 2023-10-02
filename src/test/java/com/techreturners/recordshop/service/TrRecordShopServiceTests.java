@@ -69,12 +69,12 @@ public class TrRecordShopServiceTests {
     public void testUpdateAlbumById() {
 
         Long albumId = 5L;
-        var album = new Album(5L, "Album Five", "This is the description for Album Five", 2001, "Rock", 0L);
+        var album = new Album(albumId, "Album Five", "This is the description for Album Five", 2001, "Rock", 0L);
 
         when(mockTrRecordShopRepository.findById(albumId)).thenReturn(Optional.of(album));
         when(mockTrRecordShopRepository.save(album)).thenReturn(album);
 
-        TrRecordShopServiceImpl.updateAlbumById(albumId, album);
+        TrRecordShopServiceImpl.updateAlbumById(album);
 
         verify(mockTrRecordShopRepository, times(1)).save(album);
     }

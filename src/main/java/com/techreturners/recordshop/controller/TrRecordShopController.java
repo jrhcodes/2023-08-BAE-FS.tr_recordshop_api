@@ -72,7 +72,7 @@ public class TrRecordShopController {
     @PutMapping({"/{id}"})
     public ResponseEntity<Album> updateAlbumById(@PathVariable("id") Long id, @RequestBody Album album) {
         // album.setId(id);
-        trRecordShopService.updateAlbumById(id, album);
+        trRecordShopService.updateAlbumById(album);
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
